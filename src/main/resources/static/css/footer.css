@@ -1,0 +1,29 @@
+footer {
+    background-color: #343a40; /* Dark background */
+    color: white;
+}
+
+footer a {
+    color: white;
+    transition: color 0.3s;
+}
+
+footer a:hover {
+    color: #17a2b8; /* Highlight color on hover */
+}
+
+footer h5 {
+    border-bottom: 2px solid #17a2b8; /* Accent underline */
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.btn-light {
+    background-color: #f8f9fa; /* Light button background */
+    color: #343a40; /* Dark text */
+}
+
+.btn-success {
+    background-color: #28a745; /* Success color */
+    color: white;
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barcode Generator</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h1>Barcode Generator</h1>
+  <form action="/generate" method="post">
+    <div class="form-group">
+      <label for="productName">Product Name:</label>
+      <input type="text" class="form-control" id="productName" name="productName" required>
+    </div>
+    <div class="form-group">
+      <label for="companyName">Company Name:</label>
+      <input type="text" class="form-control" id="companyName" name="companyName">
+    </div>
+    <div class="form-group">
+      <label for="size">Size:</label>
+      <input type="text" class="form-control" id="size" name="size">
+    </div>
+    <div class="form-group">
+      <label for="color">Color:</label>
+      <input type="text" class="form-control" id="color" name="color">
+    </div>
+    <div class="form-group">
+      <label for="shape">Shape:</label>
+      <input type="text" class="form-control" id="shape" name="shape">
+    </div>
+    <button type="submit" class="btn btn-primary">Generate Barcode</button>
+  </form>
+
+  <div class="mt-4">
+    <p th:text="${message}"></p>
+    <img th:if="${barcodeImage}" th:src="@{${barcodeImage}}" alt="Generated Barcode" />
+  </div>
+</div>
+</body>
+</html>
