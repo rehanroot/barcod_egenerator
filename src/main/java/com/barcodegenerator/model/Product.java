@@ -10,13 +10,13 @@ public class Product {
     private Long id;
 
     private String name;
-    private String color; // Keep this for color
-    private String size; // Keep this for size
-    private String shape; // Add new field for shape
-    private String companyName; // Add new field for company name
-    private String barcodePath;
+    private String color; // Field for color
+    private String size;  // Field for size
+    private String shape; // Field for shape
+    private String companyName; // Field for company name
+    private String barcodePath; // Path to the generated barcode image
 
-    // Constructors, getters, and setters
+    // Constructors
     public Product() {
     }
 

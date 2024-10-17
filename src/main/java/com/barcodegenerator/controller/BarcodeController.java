@@ -1,7 +1,5 @@
 package com.barcodegenerator.controller;
 
-import com.barcodegenerator.model.Product;
-import com.barcodegenerator.repository.ProductRepository;
 import com.barcodegenerator.service.BarcodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,28 +14,26 @@ public class BarcodeController {
     @Autowired
     private BarcodeService barcodeService;
 
-    @Autowired
-    private ProductRepository productRepository;
-
     @GetMapping("/")
-    public String showHomePage(Model model) {
-        // You can add any data you want to pass to the homepage template here
-        return "index"; // Ensure this matches the HTML file name (index.html)
+    public String home() {
+        return "index"; // Returns the homepage
     }
 
-    @GetMapping("/barcode")
-    public String showBarcodePage(Model model) {
-        model.addAttribute("message", ""); // Initialize the message
-        return "barcode"; // Ensure this matches the HTML file name (barcode.html)
+    // Correct mapping for barcode generator form
+    @GetMapping("/generate")
+    public String getBarcodeGeneratorForm() {
+        return "barcode"; // Returns the barcode generator form
     }
 
     @PostMapping("/generate")
-    public String generateBarcode(@RequestParam("productName") String productName,
-                                  @RequestParam(value = "companyName", required = false) String companyName,
-                                  @RequestParam(value = "size", required = false) String size,
-                                  @RequestParam(value = "color", required = false) String color,
-                                  @RequestParam(value = "shape", required = false) String shape,
-                                  Model model) {
+    public String generateBarcode(
+            @RequestParam String productName,
+            @RequestParam(required = false) String companyName,
+            @RequestParam(required = false) String size,
+            @RequestParam(required = false) String color,
+            @RequestParam(required = false) String shape,
+            Model model) {
+
         // Generate a random 3-digit number
         int randomNum = (int) (Math.random() * 900) + 100; // Generates a number between 100 and 999
 
@@ -48,23 +44,20 @@ public class BarcodeController {
         String shapeInitial = (shape != null && !shape.isEmpty()) ? String.valueOf(shape.charAt(0)).toUpperCase() : "";
 
         // Construct the barcode text including size, color, company, and shape initials
-        String barcodeText = String.format("%d-%s-%s-%s-%s-%s", randomNum, sizeInitial, colorInitial, companyInitial, shapeInitial, productName);
+        String barcodeText = String.format("%d-%s-%s-%s-%s-%s",
+                randomNum, sizeInitial, colorInitial, companyInitial, shapeInitial, productName);
 
         String fileName = barcodeService.generateUniqueFileName(productName);
         String filePath = fileName;
 
         try {
-            Product product = new Product(productName, color, size, shape, companyName, filePath);
-            productRepository.save(product);
-
-            barcodeService.generateBarcodeAndSaveProduct(barcodeText, filePath);
+            barcodeService.generateBarcodeAndSaveProduct(barcodeText, filePath, productName, companyName, size, color, shape); // Use the barcodeRequest directly
             model.addAttribute("message", "Barcode generated successfully!");
             model.addAttribute("barcodeImage", "/images/barcodes/" + fileName);
         } catch (Exception e) {
             model.addAttribute("message", "Error generating barcode: " + e.getMessage());
         }
 
-        return "barcode";
+        return "barcode"; // Return the view name
     }
-
 }
